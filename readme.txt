@@ -20,3 +20,4 @@ git add readme.txt
 
 git commit -m " some git commands "
 
+git log --pretty=oneline
