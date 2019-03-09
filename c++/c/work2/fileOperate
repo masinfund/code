@@ -1,0 +1,128 @@
+FILE *fp ; // 文件指针
+
+重定向(redirection) 
+输入重定向 demo < in.dat 
+	使stdin流从文件in.dat中读取数据
+ex : justify <D:\\code\\c\\work2\\in.dat   // at cmd is valid
+输出重定向 demo > out.dat
+
+结合使用 ： demo <in.dat >out.dat
+
+源代码是存储在文本文件中， 文本文件分为若干行，文本文件每一行通常以一两个特殊字符结尾，与操作系统有关。
+\n unix
+\n\r windows
+\r MAC
+
+小端程序 ： 最左边的字节最后存储。
+
+FILE *fopen(const char * restric filename, const char * restrict mode) ;
+
+fopen("c:\\project\\test.dat","r"); // "c:\project\test.dat"
+
+fopen返回一个文件指针,无法打开文件，返回空指针。
+fp = fopen("in.dat","r") ;
+文本文件  ， 二进制文件需要在模式字符串中包含b
+"r"    read-only 必须存在
+"w"    write 文件不需要存在
+"a"    add   追加，不需要存在
+"r+"   read and write , 从文件头开始
+"w+"   read and write , 如果文件存在就截去
+"a+"   read and write , 如果文件存在就追加	
+
+int fclose(FILE *stream) ;
+
+ex : FILE *fp ;
+	fp = fopen(FILE_NAME,"r") 
+	if(!p){
+		printf("Can't open %s\n",FILE_NAME) ;
+		exit(EXIT_FAILURE) ;
+	}
+
+	fclose(fp) ;
+
+freopen("foo","w",stdout) ; // 使程序往foo中写数据
+// 为已经打开的流附加不同的文件
+
+从命令行获取文件名 // canopen.c
+
+fflush(fp) ; // 为和fp相关联的文件清洗了缓冲区
+fflush(NULL) ; // 清洗全部输出流，success return 0 ,else EOF
+
+
+remove("foo") ; // 删除文件,一定要确保已经关闭了要移除的文件
+
+rename("foo","bar") ; // renames "foo" to "bar" 
+
+fprintf(fp,"Total:%d\n",total) ;
+fprintf(stderr,"Error:data file can't be opened.\n") ;
+
+fscanf(fp,"%d%d",&i,&j) ; // 从fp中读入内容 
+
+fputc(ch,fp) ;
+putc(ch,fp) ; // 通常作为宏实现，像putchar一样
+#define putchar(ch) putc((c),stdout) 
+
+ch = getchar() // reads a character from stdin
+ch = fgetc(fp) 
+ch = getc(fp) ;
+
+
+复制文件 
+fcopy f1.c f2.c // 把f1.c 复制给文件f2.c
+
+int main(int argc , char **argv)
+{
+	FILE *source_fp , *dest_fp ;
+	int ch ;
+	if(argc != 3){
+	fprintf(stderr,"uage:fcopy source dest \n") ;
+	exit(EXIT_FAILURE) ;
+	}
+
+	if((source_fp = fopen(argv[1],"rb")) == NULL)
+		fprintf(stderr,"Can't open %s\n",argv[1]) ;
+		exit(EXIT_FAILURE) ;
+
+	IF(dest_fp = fopen(argv[2],"wb")) == NULL){
+		fprintf(stderr,"Can't open %s\n",argv[2]) ;
+		fclose(source_fp) ;
+		exit(EXIT_FAILURE) ;
+	}
+	while((ch = getc(source_fp)) != EOF)
+		putc = ch(,dest_fp) ;
+
+	fclose(source_fp) ;
+	fclose(dest_fp) ;
+	return 0 ;
+	remove(source_fp) ;
+	remove(dest_fp) ;
+	source_fp = NULL ;
+	dest_fp = NULL ;
+}
+
+行输出函数
+puts("Hi,there") ;  // 错误返回EOF
+fputs("HI,there!",fp) ;
+
+行输入函数 
+gets(str) ;  // 读到换行符停止，丢弃换行符
+fgets(str,sizeof(str),fp) ;
+
+
+块的输入输出
+fwrite(a,sizeof(a[0]) , sizeof(a) / sizeof(a[0]) ,fp) ;
+// 把内存中的数组复制给流
+
+fread ：从流读入数组的元素。
+n = fread(a,sizeof(a[0]) , sizeof(a) / sizeof(a[0]) ,fp) ;
+
+
+
+fseek函数改变与第一个参数相关的文件位置
+fseek(fp,0L,SEEK_END) ; // moves to beginning of file .
+
+fseek(fp,-10L,SEEK_CUR) ; // moves back 10 bytes 
+
+// 字节计数是long int   ,产生错误返回非零值
+
+rewind(fp) ; //把文件位置设置在起始处，等价于fseek(fp,0L,SEEK_SET);

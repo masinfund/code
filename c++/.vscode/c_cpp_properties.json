@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            
+            "includePath": [
+                "${workspaceFolder}"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.17134.0",
+            "compilerPath": "C:\\MinGW\\bin\\g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64" ,
+            "browse" : {
+                "path" : [
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true ,
+                "databaseFilename": ""
+            }
+        }
+    ],
+    "version": 4
+}
